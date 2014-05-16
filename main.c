@@ -50,6 +50,14 @@ void afficheTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee tabl
 
 }
 
+// cette fonction calcule la pente entre deux points
+// y du pointA - y du pointB / x du pointA - x du pointB 
+// tout ca dans l'absolu
+double calculDelaPenteDeDeuxPoint(coordonee pointA, coordonee pointB){
+        return (pointA.y-pointB.y)/(pointA.x-pointB.x);
+}
+
+
 // La fonction main ( retourne 0 lorsque bien complété)
 // lis le nombre de point total au clavier
 // lis la première coordonée entre
