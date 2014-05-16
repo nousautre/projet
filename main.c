@@ -5,6 +5,13 @@
 
 #include <stdio.h>
 
+
+typedef struct {
+                double x;
+                double y;
+ }coordonee;
+
+
 // cette procédure ( qui ne renvoie rien) lis le nombre de point total attendu
 void nombrePointTotal(int * NOMBREDEPOINTTOTAL){
  scanf("%d", &*NOMBREDEPOINTTOTAL);
@@ -22,21 +29,23 @@ void coordoneePointXYActuel(double * pointXActuel, double * pointYActuel){
 
 // cette procédure construit le tableau des coordonnée a l'aide de la fonction de lecture de point coordonePointXYActuel 
 // principale fonctionnalité est de construire le tableau de base des donnée recu au clavier
-void construitTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, int * tableauCoordoneePointXY){
+void construitTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]){
     double pointXActuel=0;
     double pointYActuel=0;
     int i=0;
     for (i;i<NOMBREDEPOINTTOTAL;++i){
         coordoneePointXYActuel(&pointXActuel,&pointYActuel);
-       tableauCoordoneePointXY[i] =  pointXActuel; // pour l'instant ce n'est pas un tableau de structure alors je ne garde que le x
+       tableauCoordoneePointXY[i].x = pointXActuel; // pour l'instant ce n'est pas un tableau de structure alors je ne garde que le x
+       tableauCoordoneePointXY[i].y = pointYActuel;
     }   
 }
 
 //cette procedure affiche le tableau creer à la base
-void afficheTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, int * tableauCoordoneePointXY){
+void afficheTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]){
     int i = 0;
     for (i;i<NOMBREDEPOINTTOTAL;++i){
-         printf( "Tableau espace %i : %d \n",i, tableauCoordoneePointXY[i]);  
+         printf( "Tableau espace  le X vaut: %lf \n",tableauCoordoneePointXY[i].x);  
+         printf( "Tableau espace  le Y vaut: %lf \n",tableauCoordoneePointXY[i].y);
     }   
 
 }
@@ -48,9 +57,9 @@ int main(){
     const unsigned int NOMBREDEPOINTTOTAL; // a verifier aupres de l'enseignant si cest valide de declarer et dassigner apres la valeur de la constante....
     printf( "BIENVENUE \n"); // SERA RETIRER
     nombrePointTotal(&NOMBREDEPOINTTOTAL);
-    int tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]; // combien de point total par defaut en assignant une valeur non dynamique?? création de tableau non dynamique
+    coordonee tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]; // combien de point total par defaut en assignant une valeur non dynamique?? création de tableau non dynamique
     printf( "Total de point: %i\n", NOMBREDEPOINTTOTAL); // SERA RETIRER
-    construitTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,&tableauCoordoneePointXY);
+    construitTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,&tableauCoordoneePointXY);// un tableau cest toujours passe en référence je crois
     afficheTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,&tableauCoordoneePointXY);
 
 return 0;
