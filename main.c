@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 // cette procédure ( qui ne renvoie rien) lis le nombre de point total attendu
-int nombrePointTotal(int * nombreDePointTotal){
+void nombrePointTotal(int * nombreDePointTotal){
  scanf("%d", &*nombreDePointTotal);
 }
 
