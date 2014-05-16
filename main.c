@@ -20,18 +20,26 @@ void coordoneePointXYActuel(double * pointXActuel, double * pointYActuel){
  printf( "Coordone Y: %lf\n", *pointYActuel); // SERA RETIRER
 }
 
+// cette procédure construit le tableau des coordonnée a l'aide de la fonction de lecture de point coordonePointXYActuel 
+// principale fonctionnalité est de construire le tableau de base des donnée recu au clavier
 void construitTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, int * tableauCoordoneePointXY){
     double pointXActuel=0;
     double pointYActuel=0;
-    int i=1;
-    for (i;i<=NOMBREDEPOINTTOTAL;++i){
+    int i=0;
+    for (i;i<NOMBREDEPOINTTOTAL;++i){
         coordoneePointXYActuel(&pointXActuel,&pointYActuel);
        tableauCoordoneePointXY[i] =  pointXActuel; // pour l'instant ce n'est pas un tableau de structure alors je ne garde que le x
-    }
-    
-    
+    }   
 }
 
+//cette procedure affiche le tableau creer à la base
+void afficheTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, int * tableauCoordoneePointXY){
+    int i = 0;
+    for (i;i<NOMBREDEPOINTTOTAL;++i){
+         printf( "Tableau espace %i : %d \n",i, tableauCoordoneePointXY[i]);  
+    }   
+
+}
 
 // La fonction main ( retourne 0 lorsque bien complété)
 // lis le nombre de point total au clavier
@@ -43,6 +51,7 @@ int main(){
     int tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]; // combien de point total par defaut en assignant une valeur non dynamique?? création de tableau non dynamique
     printf( "Total de point: %i\n", NOMBREDEPOINTTOTAL); // SERA RETIRER
     construitTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,&tableauCoordoneePointXY);
+    afficheTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,&tableauCoordoneePointXY);
 
 return 0;
 }
