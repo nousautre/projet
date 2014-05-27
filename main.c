@@ -29,19 +29,19 @@ void coordoneePointXYActuel(double * pointXActuel, double * pointYActuel){
 
 // cette procédure construit le tableau des coordonnée a l'aide de la fonction de lecture de point coordonePointXYActuel 
 // principale fonctionnalité est de construire le tableau de base des donnée recu au clavier
-void construitTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]){
+void construitTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee tableauCoordoneePointXY[]){
     double pointXActuel=0;
     double pointYActuel=0;
     int i=0;
     for (i;i<NOMBREDEPOINTTOTAL;++i){
-        coordoneePointXYActuel(&pointXActuel,&pointYActuel);
+       coordoneePointXYActuel(&pointXActuel,&pointYActuel);
        tableauCoordoneePointXY[i].x = pointXActuel; // pour l'instant ce n'est pas un tableau de structure alors je ne garde que le x
        tableauCoordoneePointXY[i].y = pointYActuel;
     }   
 }
 
 //cette procedure affiche le tableau creer à la base
-void afficheTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]){
+void afficheTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee tableauCoordoneePointXY[]){
     int i = 0;
     for (i;i<NOMBREDEPOINTTOTAL;++i){
          printf( "Tableau espace  le X vaut: %lf \n",tableauCoordoneePointXY[i].x);  
@@ -58,17 +58,26 @@ double calculDelaPenteDeDeuxPoint(coordonee pointA, coordonee pointB){
 }
 
 
+// Construit le tableau de pente de chacun des points
+void construitTableauDePente(){
+
+}
+
+
 // La fonction main ( retourne 0 lorsque bien complété)
 // lis le nombre de point total au clavier
 // lis la première coordonée entre
-int main(){
+int main(int argc, char ** argv){
     const unsigned int NOMBREDEPOINTTOTAL; // a verifier aupres de l'enseignant si cest valide de declarer et dassigner apres la valeur de la constante....
     printf( "BIENVENUE \n"); // SERA RETIRER
     nombrePointTotal(&NOMBREDEPOINTTOTAL);
+    
     coordonee tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]; // combien de point total par defaut en assignant une valeur non dynamique?? création de tableau non dynamique
+    
     printf( "Total de point: %i\n", NOMBREDEPOINTTOTAL); // SERA RETIRER
-    construitTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,&tableauCoordoneePointXY);// un tableau cest toujours passe en référence je crois
-    afficheTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,&tableauCoordoneePointXY);
+    
+    construitTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY);// un tableau cest toujours passe en référence je crois
+    afficheTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY);
 
 return 0;
 }
