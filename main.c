@@ -47,22 +47,32 @@ void afficheTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee tabl
          printf( "Tableau espace  le X vaut: %lf \n",tableauCoordoneePointXY[i].x);  
          printf( "Tableau espace  le Y vaut: %lf \n",tableauCoordoneePointXY[i].y);
     }   
-
 }
 
 // cette fonction calcule la pente entre deux points
 // y du pointA - y du pointB / x du pointA - x du pointB 
 // tout ca dans l'absolu
-double calculDelaPenteDeDeuxPoint(coordonee pointA, coordonee pointB){
+double calculDelaPente(coordonee pointA, coordonee pointB){
         return (pointA.y-pointB.y)/(pointA.x-pointB.x);
 }
 
-
 // Construit le tableau de pente de chacun des points
-void construitTableauDePente(){
-
+// Le calcul s'effectue sur NOMBREDEPOINTTOTAL -1 car le dernier point n'a pas de suivant
+void construitTableauDePente(const int NOMBREDEPOINTTOTAL, coordonee tableauCoordoneePointXY[], double tableauDePente[]){
+int i = 0;
+    for (i;i<NOMBREDEPOINTTOTAL-1;++i){
+         tableauDePente[i] = calculDelaPente(tableauCoordoneePointXY[i],tableauCoordoneePointXY[i+1]);
+    }
 }
 
+//cette procedure affiche le tableau de pente
+void afficheTableauDePente(const int NOMBREDEPOINTTOTAL,double tableauDePente[]){
+    int i = 0;
+    for (i;i<NOMBREDEPOINTTOTAL-1;++i){
+         printf( "Tableau espace la pente vaut: %lf \n",tableauDePente[i]);  
+    }   
+
+}
 
 // La fonction main ( retourne 0 lorsque bien complété)
 // lis le nombre de point total au clavier
@@ -73,11 +83,28 @@ int main(int argc, char ** argv){
     nombrePointTotal(&NOMBREDEPOINTTOTAL);
     
     coordonee tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]; // combien de point total par defaut en assignant une valeur non dynamique?? création de tableau non dynamique
+    double tableauDePente[NOMBREDEPOINTTOTAL-1];
     
-    printf( "Total de point: %i\n", NOMBREDEPOINTTOTAL); // SERA RETIRER
+    printf( "\nTotal de point: %i\n", NOMBREDEPOINTTOTAL); // SERA RETIRER
     
     construitTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY);// un tableau cest toujours passe en référence je crois
     afficheTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY);
 
+    construitTableauDePente(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY,tableauDePente);// un tableau cest toujours passe en référence je crois
+    afficheTableauDePente(NOMBREDEPOINTTOTAL,tableauDePente);
 return 0;
 }
+
+/*
+ -4.5 2.0   -4 3.0              =>  2
+ -4 3.0     -3.5 4.0            =>  2
+-3.5 4.0    -3 2.0              => -4
+-3 2.0      -2.5 1              => -2
+-2.5 1      -2 -40.4            => -82.800000
+-2 -40.4    -1 12               =>  52.40
+-1 12        3 -4.0423434       => -4.010586
+3 -4.0423434 6 2.098            =>  2.046781
+6 2.098      15 1.49            => -0.067556
+15 1.49
+ 
+ */
