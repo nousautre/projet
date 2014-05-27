@@ -4,7 +4,7 @@
 
 #include <math.h>
 #include <stdio.h>
-
+#include <stdlib.h>
 
 
 typedef struct {
@@ -79,7 +79,7 @@ double calculDeLArcTan(double pente){
    return  atan(pente);
 }
 
-// Construit le tableau de pente de chacun des points
+// Construit le tableau de ArcTan de chacun des points
 // Le calcul s'effectue sur NOMBREDEPOINTTOTAL -1 car le dernier point n'a pas de suivant
 void construitTableauDeLArcTan(const int NOMBREDEPOINTTOTAL, double tableauDePente[], double tableauDeArcTan[]){
 int i = 0;
@@ -88,7 +88,7 @@ int i = 0;
     }
 }
 
-//cette procedure affiche le tableau de pente
+//cette procedure affiche le tableau de ArcTan
 void afficheTableauDeLArcTan(const int NOMBREDEPOINTTOTAL,double tableauDeArcTan[]){
     int i = 0;
     for (i;i<NOMBREDEPOINTTOTAL-1;++i){
@@ -96,17 +96,46 @@ void afficheTableauDeLArcTan(const int NOMBREDEPOINTTOTAL,double tableauDeArcTan
     }   
 }
 
+// OK CETTE FONCTION JE NE SUIS PAS SUR SI CA DOIT TOUJOURS ETRE UN RESULTAT x1 - x2
+// ca adonnait drole dans cest exemple
+// return ai+1 - ai
+double calculDifferenceAngle(double angleAIplus1, double angleAI){
+   return angleAIplus1 - angleAI;
+}
+
+void construitTableauDifferenceAngle(const int NOMBREDEPOINTTOTAL,double tableauDeArcTan[], double tableauDifferenceAngle[]){
+int i = 0;
+    for (i;i<NOMBREDEPOINTTOTAL-2;++i){
+         tableauDifferenceAngle[i] = calculDifferenceAngle(tableauDeArcTan[i+1],tableauDeArcTan[i]);
+    }
+}
+
+//cette procedure affiche le tableau de ArcTan
+void afficheTableauDifferenceAngle(const int NOMBREDEPOINTTOTAL,double tableauDifferenceAngle[]){
+    int i = 0;
+    for (i;i<NOMBREDEPOINTTOTAL-2;++i){
+         printf( "\nTableauDiffAngle vaut: %lf \n",tableauDifferenceAngle[i]);  
+    }   
+}
+
+
+
+
 // La fonction main ( retourne 0 lorsque bien complété)
 // lis le nombre de point total au clavier
 // lis la première coordonée entre
 int main(int argc, char ** argv){
+    int pourcentageDePointConserver = atoi(argv[1]);
+    printf( "\nCONSERVER => : %i \n", pourcentageDePointConserver); //sera Retirer  
     int NOMBREDEPOINTTOTAL; // a verifier aupres de l'enseignant si cest valide de declarer et dassigner apres la valeur de la constante....
     printf( "BIENVENUE \n"); // SERA RETIRER
     nombrePointTotal(&NOMBREDEPOINTTOTAL);
     
+    
     coordonee tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]; // combien de point total par defaut en assignant une valeur non dynamique?? création de tableau non dynamique
     double tableauDePente[NOMBREDEPOINTTOTAL-1];
     double tableauDeArcTan[NOMBREDEPOINTTOTAL-1];
+    double tableauDifferenceAngle[NOMBREDEPOINTTOTAL-1];
     
     printf( "\nTotal de point: %i\n", NOMBREDEPOINTTOTAL); // SERA RETIRER
     
@@ -118,6 +147,11 @@ int main(int argc, char ** argv){
     
     construitTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDePente,tableauDeArcTan);// un tableau cest toujours passe en référence je crois
     afficheTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDeArcTan);
+    
+    construitTableauDifferenceAngle(NOMBREDEPOINTTOTAL, tableauDeArcTan, tableauDifferenceAngle);// un tableau cest toujours passe en référence je crois
+    afficheTableauDifferenceAngle(NOMBREDEPOINTTOTAL,tableauDifferenceAngle);
+    
+    
 return 0;
 }
 
