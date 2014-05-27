@@ -2,9 +2,9 @@
 // Marc-Étienne Leblanc
 // Gabriel Poulin
 
-
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
+
 
 
 typedef struct {
@@ -76,7 +76,7 @@ void afficheTableauDePente(const int NOMBREDEPOINTTOTAL,double tableauDePente[])
 
 // cette procédure calcule et renvoie artan d'un angle
 double calculDeLArcTan(double pente){
-        return atan(pente);
+   return  atan(pente);
 }
 
 // Construit le tableau de pente de chacun des points
@@ -116,8 +116,8 @@ int main(int argc, char ** argv){
     construitTableauDePente(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY,tableauDePente);// un tableau cest toujours passe en référence je crois
     afficheTableauDePente(NOMBREDEPOINTTOTAL,tableauDePente);
     
-    construitTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY,tableauDePente);// un tableau cest toujours passe en référence je crois
-    afficheTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDePente);
+    construitTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDePente,tableauDeArcTan);// un tableau cest toujours passe en référence je crois
+    afficheTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDeArcTan);
 return 0;
 }
 
@@ -133,4 +133,14 @@ return 0;
 6 2.098      15 1.49            => -0.067556
 15 1.49
  
+ * 
+ * 
+ * 
+5
+-2 -0.5
+-1 2.2
+0 1.6 
+1 1.8
+2 1.0
+ * 
  */
