@@ -125,8 +125,8 @@ void afficheTableauDifferenceAngle(const int NOMBREDEPOINTTOTAL,double tableauDi
 // lis le nombre de point total au clavier
 // lis la première coordonée entre
 int main(int argc, char ** argv){
-   // int pourcentageDePointConserver = atoi(argv[1]);
-    //printf( "\nCONSERVER => : %i \n", pourcentageDePointConserver); //sera Retirer  
+    int pourcentageDePointConserver = atoi(argv[1]);
+    printf( "\nCONSERVER => : %i \n", pourcentageDePointConserver); //sera Retirer  
     int NOMBREDEPOINTTOTAL; // a verifier aupres de l'enseignant si cest valide de declarer et dassigner apres la valeur de la constante....
     printf( "BIENVENUE \n"); // SERA RETIRER
     nombrePointTotal(&NOMBREDEPOINTTOTAL);
