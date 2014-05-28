@@ -5,7 +5,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <limits.h> // pour LONG_MAX
 
 typedef struct {
                 double ptX;
@@ -20,12 +20,12 @@ void nombrePointTotal(int * NOMBREDEPOINTTOTAL){
 
 // cette procédure ( qui ne renvoie rien) lis la coordonée actuelle
 // verifier si lutilisateur entre plein despace consécutive
-
+// VERIFIE SI %lf cest ce que ca prend pour le double
 void coordoneePointXYActuel(double * pointXActuel, double * pointYActuel){
  scanf("%lf", &*pointXActuel);
  scanf("%lf", &*pointYActuel);
- printf( "Coordone X: %lf\n", *pointXActuel); // SERA RETIRER
- printf( "Coordone Y: %lf\n", *pointYActuel); // SERA RETIRER
+// printf( "Coordone X: %lf\n", *pointXActuel); // SERA RETIRER
+// printf( "Coordone Y: %lf\n", *pointYActuel); // SERA RETIRER
 }
 
 // cette procédure construit le tableau des coordonnée a l'aide de la fonction de lecture de point coordonePointXYActuel 
@@ -45,8 +45,10 @@ void construitTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee ta
 void afficheTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee tableauCoordoneePointXY[]){
     int i = 0;
     for (i;i<NOMBREDEPOINTTOTAL;++i){
-         printf( "Tableau espace  le X vaut: %lf \n",tableauCoordoneePointXY[i].ptX);  
-         printf( "Tableau espace  le Y vaut: %lf \n",tableauCoordoneePointXY[i].ptY);
+       //  printf( "Tableau espace  le X vaut: %lf \n",tableauCoordoneePointXY[i].ptX);  
+       //  printf( "Tableau espace  le Y vaut: %lf \n",tableauCoordoneePointXY[i].ptY);
+        printf( "%8f ",tableauCoordoneePointXY[i].ptX);  
+        printf( "%8f\n",tableauCoordoneePointXY[i].ptY);
     }   
 }
 
@@ -141,10 +143,21 @@ void validationArgumentC(int argc){
 
 void validationNombrePointTotal(int NOMBREDEPOINTTOTAL){
    if (NOMBREDEPOINTTOTAL < 1){
-       fprintf( stderr, "veuillez entrez un seul chiffre plus grand que 1" );
+       fprintf( stderr, "Veuillez entrez un seul chiffre plus grand que 1" );
        exit(-1);
    }
 }
+
+//remove tableauCoordoneePointXY[indiceDansLeTableauDuPlusPetit];
+                    //remove differenceAngle[indiceDansLeTableauDuPlusPetit]
+                    //calculer la difference angle entre le precedent et le suivant du remove
+                    //le remettre dans le tableau 
+               // LE NOMBRE DE POINT TOTAL doit CHANGER !!!!
+void moulinetteDuRetrait(int indiceDansLeTableauDuPlusPetit){
+        printf( "Voici l'indice de l'élément a retirer %d \n",indiceDansLeTableauDuPlusPetit);
+}
+
+
 
 // La fonction main ( retourne 0 lorsque bien complété)
 // lis le nombre de point total au clavier
@@ -171,19 +184,43 @@ int main(int argc, char ** argv){
     
     printf( "\nTotal de point: %i\n", NOMBREDEPOINTTOTAL); // SERA RETIRER
     
+    
     construitTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY);// un tableau cest toujours passe en référence je crois
-    afficheTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY);
-
+    
     construitTableauDePente(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY,tableauDePente);// un tableau cest toujours passe en référence je crois
-    afficheTableauDePente(NOMBREDEPOINTTOTAL,tableauDePente);
+    //afficheTableauDePente(NOMBREDEPOINTTOTAL,tableauDePente);
     
     construitTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDePente,tableauDeArcTan);// un tableau cest toujours passe en référence je crois
-    afficheTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDeArcTan);
+    //afficheTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDeArcTan);
     
     construitTableauDifferenceAngle(NOMBREDEPOINTTOTAL, tableauDeArcTan, tableauDifferenceAngle);// un tableau cest toujours passe en référence je crois
     afficheTableauDifferenceAngle(NOMBREDEPOINTTOTAL,tableauDifferenceAngle);
     
-    
+    //. Vous devez toujours conserver un minimum de 2 points
+    // si le nombre de pointConserver est le même que les points donnée en argument il n'y a pas de calcul à faire
+    // je vais faire un tableau de point qui pointe vers l'adresse des pas bon
+    if (pointConserver > 2){
+        if (pointConserver != pointAConserverArgument){
+            int nombreDePointASupprimer = NOMBREDEPOINTTOTAL - pointConserver;
+            printf( "\nPOINT A SUPPRIMER: %i\n", nombreDePointASupprimer); // SERA RETIRER
+             int i = 1;
+                for (i;i<=nombreDePointASupprimer;++i){
+                    double lePlusPetit = LONG_MAX;
+                    int indiceDansLeTableauDuPlusPetit = INT_MAX;
+                    int j = 0;
+                    // LE NOMBRE DE POINT TOTAL doit CHANGER !!!!
+                        for (j;j<NOMBREDEPOINTTOTAL-2;++j){
+                            if (tableauDifferenceAngle[j] < lePlusPetit){
+                                indiceDansLeTableauDuPlusPetit=j;
+                            }
+                        }
+                    moulinetteDuRetrait(indiceDansLeTableauDuPlusPetit);
+                    
+                }      
+         }
+    }
+    //affiche les points...
+    afficheTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY);
 return 0;
 }
 
