@@ -123,10 +123,19 @@ int calculPourcentagePointConserver(int NOMBREDEPOINTTOTAL, int pointAConserverA
     return ((NOMBREDEPOINTTOTAL * pointAConserverArgument1)/100);    
 }
 
-void validationArguments(int argc, int pointAConserverArgument1){
-     if ((pointAConserverArgument1 < 0)||(pointAConserverArgument1>100)||(argc != 2)){
-        fprintf( stderr, "L'argument donne n'est pas valide, veuillez entrez un chiffre entre 1 et 100." );
-        exit(-1);
+void sortieErreur(){
+  fprintf( stderr, "L'argument donne n'est pas valide, veuillez entrez un seul chiffre entre 1 et 100." );
+  exit(-1);
+}
+
+void validationArgumentV(int pointAConserverArgument1){
+     if ((pointAConserverArgument1 < 0)||(pointAConserverArgument1>100)){
+         sortieErreur();
+    }
+}
+void validationArgumentC(int argc){
+     if (argc != 2){
+        sortieErreur();
     }
 }
 
@@ -134,12 +143,11 @@ void validationArguments(int argc, int pointAConserverArgument1){
 // lis le nombre de point total au clavier
 // lis la première coordonée entre
 int main(int argc, char ** argv){
-  
+    validationArgumentC(argc);
     int pointAConserverArgument = atoi(argv[1]);
-    validationArguments(argc, pointAConserverArgument);
+    validationArgumentV(pointAConserverArgument);
     printf( "\nCONSERVER => : %i \n", pointAConserverArgument); //sera Retirer 
-    
-    
+       
     int NOMBREDEPOINTTOTAL; // a verifier aupres de l'enseignant si cest valide de declarer et dassigner apres la valeur de la constante....
     printf( "BIENVENUE \n"); // SERA RETIRER
     nombrePointTotal(&NOMBREDEPOINTTOTAL);
