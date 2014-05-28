@@ -129,7 +129,7 @@ void sortieErreur(){
 }
 
 void validationArgumentV(int pointAConserverArgument1){
-     if ((pointAConserverArgument1 < 0)||(pointAConserverArgument1>100)){
+     if ((pointAConserverArgument1 < 1)||(pointAConserverArgument1>100)){
          sortieErreur();
     }
 }
@@ -137,6 +137,13 @@ void validationArgumentC(int argc){
      if (argc != 2){
         sortieErreur();
     }
+}
+
+void validationNombrePointTotal(int NOMBREDEPOINTTOTAL){
+   if (NOMBREDEPOINTTOTAL < 1){
+       fprintf( stderr, "veuillez entrez un seul chiffre plus grand que 1" );
+       exit(-1);
+   }
 }
 
 // La fonction main ( retourne 0 lorsque bien complété)
@@ -151,6 +158,8 @@ int main(int argc, char ** argv){
     int NOMBREDEPOINTTOTAL; // a verifier aupres de l'enseignant si cest valide de declarer et dassigner apres la valeur de la constante....
     printf( "BIENVENUE \n"); // SERA RETIRER
     nombrePointTotal(&NOMBREDEPOINTTOTAL);
+    validationNombrePointTotal(NOMBREDEPOINTTOTAL);
+    
     int pointConserver = calculPourcentagePointConserver(NOMBREDEPOINTTOTAL, pointAConserverArgument);
     printf( "pointConserver:%i  \n",pointConserver);
     
