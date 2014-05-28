@@ -141,7 +141,7 @@ void validationArgumentC(int argc){
     }
 }
 
-void validationNombrePointTotal(int NOMBREDEPOINTTOTAL){
+void validationNombrePointTotal(const int NOMBREDEPOINTTOTAL){
    if (NOMBREDEPOINTTOTAL < 1){
        fprintf( stderr, "Veuillez entrez un seul chiffre plus grand que 1" );
        exit(-1);
@@ -153,8 +153,22 @@ void validationNombrePointTotal(int NOMBREDEPOINTTOTAL){
                     //calculer la difference angle entre le precedent et le suivant du remove
                     //le remettre dans le tableau 
                // LE NOMBRE DE POINT TOTAL doit CHANGER !!!!
-void moulinetteDuRetrait(int indiceDansLeTableauDuPlusPetit){
+void moulinetteDuRetrait(int NOMBREDEPOINTTOTAL, int indiceDansLeTableauDuPlusPetit, coordonee tableauCoordoneePointXY[]){
         printf( "Voici l'indice de l'élément a retirer %d \n",indiceDansLeTableauDuPlusPetit);
+       
+        coordonee valeurPrecedente = tableauCoordoneePointXY[indiceDansLeTableauDuPlusPetit-1];
+        coordonee valeurSuivante = tableauCoordoneePointXY[indiceDansLeTableauDuPlusPetit+1];
+        
+        NOMBREDEPOINTTOTAL--;
+        int i=0;
+        int j=0;
+        for (i;i<NOMBREDEPOINTTOTAL;++i){
+            if (i==indiceDansLeTableauDuPlusPetit){j=j+1;}
+                tableauCoordoneePointXY[i].ptX = tableauCoordoneePointXY[j].ptX; // pour l'instant ce n'est pas un tableau de structure alors je ne garde que le x
+                tableauCoordoneePointXY[i].ptY = tableauCoordoneePointXY[j].ptY;
+                ++j;
+        }          
+        
 }
 
 
@@ -174,7 +188,7 @@ int main(int argc, char ** argv){
     validationNombrePointTotal(NOMBREDEPOINTTOTAL);
     
     int pointConserver = calculPourcentagePointConserver(NOMBREDEPOINTTOTAL, pointAConserverArgument);
-    printf( "pointConserver:%i  \n",pointConserver);
+    printf( "\npointConserver:%i  \n",pointConserver);
     
     
     coordonee tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]; // combien de point total par defaut en assignant une valeur non dynamique?? création de tableau non dynamique
@@ -214,8 +228,8 @@ int main(int argc, char ** argv){
                                 indiceDansLeTableauDuPlusPetit=j;
                             }
                         }
-                    moulinetteDuRetrait(indiceDansLeTableauDuPlusPetit);
-                    
+                    moulinetteDuRetrait(NOMBREDEPOINTTOTAL,indiceDansLeTableauDuPlusPetit, tableauCoordoneePointXY);
+                    NOMBREDEPOINTTOTAL--;
                 }      
          }
     }
