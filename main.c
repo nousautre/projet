@@ -117,19 +117,33 @@ void afficheTableauDifferenceAngle(const int NOMBREDEPOINTTOTAL,double tableauDi
          printf( "\nTableauDiffAngle vaut: %lf \n",tableauDifferenceAngle[i]);  
     }   
 }
+// verifier pointAConserverArgument1 = 0  verifier pointAConserverArgument1 = 1 verifier pointAConserverArgument1 = 2
 
+int calculPourcentagePointConserver(int NOMBREDEPOINTTOTAL, int pointAConserverArgument1){
+    return ((NOMBREDEPOINTTOTAL * pointAConserverArgument1)/100);    
+}
 
-
+void validationArgument1(int pointAConserverArgument1){
+     if ((pointAConserverArgument1 < 0)||(pointAConserverArgument1>100)){
+        fprintf( stderr, "L'argument donne n'est pas valide, veuillez entrez un chiffre entre 1 et 100." );
+        exit(-1);
+    }
+}
 
 // La fonction main ( retourne 0 lorsque bien complété)
 // lis le nombre de point total au clavier
 // lis la première coordonée entre
 int main(int argc, char ** argv){
-    int pourcentageDePointConserver = atoi(argv[1]);
-    printf( "\nCONSERVER => : %i \n", pourcentageDePointConserver); //sera Retirer  
+    int pointAConserverArgument1 = atoi(argv[1]);
+    validationArgument1(pointAConserverArgument1);
+    printf( "\nCONSERVER => : %i \n", pointAConserverArgument1); //sera Retirer 
+    
+    
     int NOMBREDEPOINTTOTAL; // a verifier aupres de l'enseignant si cest valide de declarer et dassigner apres la valeur de la constante....
     printf( "BIENVENUE \n"); // SERA RETIRER
     nombrePointTotal(&NOMBREDEPOINTTOTAL);
+    int pointConserver = calculPourcentagePointConserver(NOMBREDEPOINTTOTAL, pointAConserverArgument1);
+    printf( "pointConserver:%i  \n",pointConserver);
     
     
     coordonee tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]; // combien de point total par defaut en assignant une valeur non dynamique?? création de tableau non dynamique
