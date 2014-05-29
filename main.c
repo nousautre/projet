@@ -29,17 +29,20 @@ typedef struct {
 void coordoneePointXYActuel(double * pointXActuel, double * pointYActuel){
  scanf("%lf", &*pointXActuel);
  scanf("%lf", &*pointYActuel);
- validationCoordonePointXY(pointXActuel, pointYActuel);
+ //validationCoordonePointXY(pointXActuel, pointYActuel); pas besoin de vérifier ca lair
 }
 
 // cette procédure construit le tableau des coordonnée a l'aide de la fonction de lecture de point coordonePointXYActuel 
 // principale fonctionnalité est de construire le tableau de base des donnée recu au clavier
 void construitTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee tableauCoordoneePointXY[]){
     double pointXActuel=0;
+    double pointXPrecedent = LONG_MIN;
     double pointYActuel=0;
     int i=0;
     for (i;i<NOMBREDEPOINTTOTAL;++i){
        coordoneePointXYActuel(&pointXActuel,&pointYActuel);
+       if (pointXPrecedent > pointXActuel){sortieErreurOrdre();}
+       pointXPrecedent = pointXActuel;
        tableauCoordoneePointXY[i].ptX = pointXActuel; // pour l'instant ce n'est pas un tableau de structure alors je ne garde que le x
        tableauCoordoneePointXY[i].ptY = pointYActuel;
     }   
@@ -133,9 +136,15 @@ void sortieErreur(){
   fprintf( stderr, "L'argument donne n'est pas valide, veuillez entrez un seul chiffre entre 1 et 100." );
   exit(-1);
 }
+void sortieErreurOrdre(){
+  fprintf( stderr, "Veuillez entrez des coordonnees valides en ordre." );
+  exit(-1);
+}
+
+// revoir LA SORTIE sa semble pas marcher
 void validationCoordonePointXY(double * pointXActuel, double * pointYActuel){
-    if ((pointXActuel < LONG_MIN) || (pointYActuel < LONG_MIN) || 
-            (pointXActuel > LONG_MAX) || (pointYActuel > LONG_MAX)){
+    if ((*pointXActuel < LONG_MIN) || (*pointYActuel < LONG_MIN) || 
+            (*pointXActuel > LONG_MAX) || (*pointYActuel > LONG_MAX)){
        fprintf( stderr, "Veuillez entrez des coordonnees valides" );
        exit(-1);
     }
