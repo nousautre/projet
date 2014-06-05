@@ -79,7 +79,7 @@ int i = 0;
 void afficheTableauDePente(const int NOMBREDEPOINTTOTAL,double tableauDePente[]){
     int i = 0;
     for (i;i<NOMBREDEPOINTTOTAL-1;++i){
-         printf( "\nTableau espace la pente vaut: %lf \n",tableauDePente[i]);  
+         printf( "\nTableau espace la pente vaut: %lf",tableauDePente[i]);  
     }   
 }
 
@@ -101,7 +101,7 @@ int i = 0;
 void afficheTableauDeLArcTan(const int NOMBREDEPOINTTOTAL,double tableauDeArcTan[]){
     int i = 0;
     for (i;i<NOMBREDEPOINTTOTAL-1;++i){
-         printf( "\nARCTAN vaut: %lf \n",tableauDeArcTan[i]);  
+         printf( "\nARCTAN vaut: %lf ",tableauDeArcTan[i]);  
     }   
 }
 
@@ -123,7 +123,7 @@ int i = 0;
 void afficheTableauDifferenceAngle(const int NOMBREDEPOINTTOTAL,double tableauDifferenceAngle[]){
     int i = 0;
     for (i;i<NOMBREDEPOINTTOTAL-2;++i){
-         printf( "\nTableauDiffAngle vaut: %lf \n",tableauDifferenceAngle[i]);  
+         printf( "\nTableauDiffAngle vaut: %lf ",tableauDifferenceAngle[i]);  
     }   
 }
 // verifier pointAConserverArgument1 = 0  verifier pointAConserverArgument1 = 1 verifier pointAConserverArgument1 = 2
@@ -188,22 +188,16 @@ void moulinetteDuRetraitDansDifference(int NOMBREDEPOINTTOTAL, int indiceDansLeT
                     //le remettre dans le tableau 
                // LE NOMBRE DE POINT TOTAL doit CHANGER !!!!
 void moulinetteDuRetraitDuTableauCoordoneXY(int NOMBREDEPOINTTOTAL, int indiceDansLeTableauDuPlusPetit, coordonee tableauCoordoneePointXY[]){
-    //    printf( "Voici l'indice de l'élément a retirer %d \n",indiceDansLeTableauDuPlusPetit);
-       
-        //coordonee valeurPrecedente = tableauCoordoneePointXY[indiceDansLeTableauDuPlusPetit-1];
-        //coordonee valeurSuivante = tableauCoordoneePointXY[indiceDansLeTableauDuPlusPetit+1];
-        
-        NOMBREDEPOINTTOTAL--;
-        int i=indiceDansLeTableauDuPlusPetit;
-        int j=indiceDansLeTableauDuPlusPetit+1;
+  
+    
+        NOMBREDEPOINTTOTAL--; 
+        int i=indiceDansLeTableauDuPlusPetit+1; // il faut retirer le deuxième point non pas le premier
+        int j=i+1;
         for (i;i<NOMBREDEPOINTTOTAL;++i){
                 tableauCoordoneePointXY[i].ptX = tableauCoordoneePointXY[j].ptX; // pour l'instant ce n'est pas un tableau de structure alors je ne garde que le x
                 tableauCoordoneePointXY[i].ptY = tableauCoordoneePointXY[j].ptY;
                 ++j;
-        }  
-
-        
-        
+        }          
 }
 
 
@@ -220,10 +214,7 @@ int main(int argc, char ** argv){
     
     int pointConserver = calculNombreDePointConserver(NOMBREDEPOINTTOTAL, pointAConserverArgument);
     
-    
-    
-    
-    
+      
     coordonee tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]; // combien de point total par defaut en assignant une valeur non dynamique?? création de tableau non dynamique
     double tableauDePente[NOMBREDEPOINTTOTAL-1];
     double tableauDeArcTan[NOMBREDEPOINTTOTAL-1];
@@ -235,13 +226,13 @@ int main(int argc, char ** argv){
     construitTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY);// un tableau cest toujours passe en référence je crois
     
     construitTableauDePente(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY,tableauDePente);// un tableau cest toujours passe en référence je crois
-    //afficheTableauDePente(NOMBREDEPOINTTOTAL,tableauDePente);
+    afficheTableauDePente(NOMBREDEPOINTTOTAL,tableauDePente);
     
     construitTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDePente,tableauDeArcTan);// un tableau cest toujours passe en référence je crois
-    //afficheTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDeArcTan);
+    afficheTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDeArcTan);
     
     construitTableauDifferenceAngle(NOMBREDEPOINTTOTAL, tableauDeArcTan, tableauDifferenceAngle);// un tableau cest toujours passe en référence je crois
-    //afficheTableauDifferenceAngle(NOMBREDEPOINTTOTAL,tableauDifferenceAngle);
+    afficheTableauDifferenceAngle(NOMBREDEPOINTTOTAL,tableauDifferenceAngle);
     
     //. Vous devez toujours conserver un minimum de 2 points
     // si le nombre de pointConserver est le même que les points donnée en argument il n'y a pas de calcul à faire
@@ -255,15 +246,28 @@ int main(int argc, char ** argv){
                     double lePlusPetit = LONG_MAX;
                     int indiceDansLeTableauDuPlusPetit = INT_MAX;
                     int j = 0;
-                    // LE NOMBRE DE POINT TOTAL doit CHANGER !!!!
-                        for (j;j<NOMBREDEPOINTTOTAL-2;++j){
+                    // -2 car indice d'un tableau debute a 0 et le calcul entre deux points renvoie n-1 point à la fin. 
+                        for (j;j<NOMBREDEPOINTTOTAL-2;++j){ 
                             if (tableauDifferenceAngle[j] < lePlusPetit){
+                                lePlusPetit = tableauDifferenceAngle[j];
                                 indiceDansLeTableauDuPlusPetit=j;
+                                
                             }
                         }
+                    printf("\nle plus petit cest : %i",indiceDansLeTableauDuPlusPetit);
                     moulinetteDuRetraitDuTableauCoordoneXY(NOMBREDEPOINTTOTAL,indiceDansLeTableauDuPlusPetit, tableauCoordoneePointXY);
-                    moulinetteDuRetraitDansDifference(NOMBREDEPOINTTOTAL, indiceDansLeTableauDuPlusPetit,tableauDifferenceAngle);
-                    NOMBREDEPOINTTOTAL--;//SUPRA IMPORTANT DE FAIRE CA APRES LES RETRAITS DANS LES AUTRES TABLEAUX 
+                   // moulinetteDuRetraitDansDifference(NOMBREDEPOINTTOTAL, indiceDansLeTableauDuPlusPetit,tableauDifferenceAngle);
+                    
+                    NOMBREDEPOINTTOTAL--;//SUPRA IMPORTANT DE FAIRE CA 
+                    construitTableauDePente(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY,tableauDePente);// un tableau cest toujours passe en référence je crois
+                        afficheTableauDePente(NOMBREDEPOINTTOTAL,tableauDePente);
+    
+                    construitTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDePente,tableauDeArcTan);// un tableau cest toujours passe en référence je crois
+                        afficheTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDeArcTan);
+    
+                    construitTableauDifferenceAngle(NOMBREDEPOINTTOTAL, tableauDeArcTan, tableauDifferenceAngle);// un tableau cest toujours passe en référence je crois
+                        afficheTableauDifferenceAngle(NOMBREDEPOINTTOTAL,tableauDifferenceAngle);
+                    
                 }      
          }
     
