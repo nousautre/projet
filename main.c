@@ -22,12 +22,10 @@ void sortieErreurOrdre() {
     exit(-1);
 }
 
-// revoir LA SORTIE sa semble pas marcher
-
 void validationCoordonePointXY(double * pointXActuel, double * pointYActuel) {
     if ((*pointXActuel < LONG_MIN) || (*pointYActuel < LONG_MIN) ||
             (*pointXActuel > LONG_MAX) || (*pointYActuel > LONG_MAX)) {
-        fprintf(stderr, "Veuillez entrez des coordonnees valides");
+        fprintf(stderr, "Veuillez entrez des coordonnees valides.");
         exit(-1);
     }
 }
@@ -51,8 +49,8 @@ void validationNombrePointTotal(const int NOMBREDEPOINTTOTAL) {
     }
 }
 
-// Cette fonction renvoie le nombre total de point X,Y que l'utilisateur entrera
-// Elle lis un nombre et appel validation pour s'assurer qu'un nombre valide est entre
+// Cette fonction renvoie le nombre total de point X,Y que l'utilisateur entre.
+// Elle lis un nombre et appel la validation de ce nombre
 
 int nombrePointTotal() {
     int NOMBREDEPOINTTOTAL;
@@ -68,11 +66,11 @@ int nombrePointTotal() {
 void coordoneePointXYActuel(double * pointXActuel, double * pointYActuel) {
     scanf("%lf", &*pointXActuel);
     scanf("%lf", &*pointYActuel);
-    //validationCoordonePointXY(pointXActuel, pointYActuel); pas besoin de vérifier ca lair
+    //validationCoordonePointXY(pointXActuel, pointYActuel); pas besoin de vérifier
 }
 
-// cette procédure construit le tableau des coordonnée a l'aide de la fonction de lecture de point coordonePointXYActuel 
-// principale fonctionnalité est de construire le tableau de base des donnée recu au clavier
+// cette procedure construit le tableau des coordonnée a l'aide de la fonction de lecture de point coordonePointXYActuel 
+// principale fonctionnalité est de construire le tableau de coordonee des donnée recu au clavier
 
 void construitTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee tableauCoordoneePointXY[]) {
     double pointXActuel = 0;
@@ -85,7 +83,7 @@ void construitTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee ta
             sortieErreurOrdre();
         }
         pointXPrecedent = pointXActuel;
-        tableauCoordoneePointXY[i].ptX = pointXActuel; // pour l'instant ce n'est pas un tableau de structure alors je ne garde que le x
+        tableauCoordoneePointXY[i].ptX = pointXActuel;
         tableauCoordoneePointXY[i].ptY = pointYActuel;
     }
 }
@@ -102,7 +100,6 @@ void afficheTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee tabl
 
 // cette fonction calcule la pente entre deux points
 // y du pointA - y du pointB / x du pointA - x du pointB 
-// tout ca dans l'absolu
 
 double calculDelaPente(coordonee pointA, coordonee pointB) {
     return (pointA.ptY - pointB.ptY) / (pointA.ptX - pointB.ptX);
@@ -128,7 +125,7 @@ void afficheTableauDePente(const int NOMBREDEPOINTTOTAL, double tableauDePente[]
     printf("\n*****************************************\n");
 }
 
-// cette procédure calcule et renvoie artan d'un angle
+// cette procédure calcule et renvoie arc tangente d'un angle
 
 double calculDeLArcTan(double pente) {
     return atan(pente);
@@ -212,52 +209,52 @@ void retraitDuTableauCoordoneXY(int NOMBREDEPOINTTOTAL, int indiceDuPlusPetitDan
 }
 
 // La fonction main ( retourne 0 lorsque bien complété)
-// lis le nombre de point total au clavier
-// lis la première coordonée entre
+// Appel les routines de validations des arguments passé
+// creer les tableaux qui retiennent l'information
 
 int main(int argc, char ** argv) {
     validationArgumentC(argc);
     int pointAConserverArgument = atoi(argv[1]);
     validationArgumentV(pointAConserverArgument);
 
-    int NOMBREDEPOINTTOTAL = nombrePointTotal();
-    int pointConserver = calculNombreDePointConserver(NOMBREDEPOINTTOTAL, pointAConserverArgument);
-    if (pointConserver < 2) {
-        pointConserver = 2;
-    }
-    coordonee * tableauCoordoneePointXY = malloc(sizeof (coordonee) * NOMBREDEPOINTTOTAL);
-    double * tableauDePente = malloc(sizeof (double) *(NOMBREDEPOINTTOTAL - 1));
-    double * tableauDeArcTan = malloc(sizeof (double) *(NOMBREDEPOINTTOTAL - 1));
-    double * tableauDifferenceAngle = malloc(sizeof (double) *(NOMBREDEPOINTTOTAL - 1));
-    construitTableauCoordoneePointXY(NOMBREDEPOINTTOTAL, tableauCoordoneePointXY); // un tableau cest toujours passe en référence je crois
-    construitTableauDePente(NOMBREDEPOINTTOTAL, tableauCoordoneePointXY, tableauDePente); // un tableau cest toujours passe en référence je crois
-    construitTableauDeLArcTan(NOMBREDEPOINTTOTAL, tableauDePente, tableauDeArcTan); // un tableau cest toujours passe en référence je crois
-    construitTableauDifferenceAngle(NOMBREDEPOINTTOTAL, tableauDeArcTan, tableauDifferenceAngle); // un tableau cest toujours passe en référence je crois
-
-
+    int nombreDePointTotal = nombrePointTotal();
+    int pointConserver = (calculNombreDePointConserver(nombreDePointTotal, pointAConserverArgument));
+    pointConserver < 2?pointConserver:2;
+    
+    //creation des tableaux 
+    coordonee * tableauCoordoneePointXY = malloc(sizeof (coordonee) * nombreDePointTotal);
+    double * tableauDePente = malloc(sizeof (double) *(nombreDePointTotal - 1));
+    double * tableauDeArcTan = malloc(sizeof (double) *(nombreDePointTotal - 1));
+    double * tableauDifferenceAngle = malloc(sizeof (double) *(nombreDePointTotal - 1));
+    
+    construitTableauCoordoneePointXY(nombreDePointTotal, tableauCoordoneePointXY); 
+    construitTableauDePente(nombreDePointTotal, tableauCoordoneePointXY, tableauDePente); 
+    construitTableauDeLArcTan(nombreDePointTotal, tableauDePente, tableauDeArcTan); 
+    construitTableauDifferenceAngle(nombreDePointTotal, tableauDeArcTan, tableauDifferenceAngle); 
+    
     if (pointConserver != pointAConserverArgument) {
-        int nombreDePointASupprimer = NOMBREDEPOINTTOTAL - pointConserver;
+        int nombreDePointASupprimer = nombreDePointTotal - pointConserver;
         int i = 1;
         for (i; i <= nombreDePointASupprimer; ++i) {
             double lePlusPetitDansDiff = LONG_MAX;
             int indiceDuPlusPetitDansDiff = INT_MAX;
             int j = 0;
             // -2 car indice d'un tableau debute a 0 et le calcul entre deux points renvoie n-1 point à la fin. 
-            for (j; j < NOMBREDEPOINTTOTAL - 2; ++j) {
+            for (j; j < nombreDePointTotal - 2; ++j) {
                 if (tableauDifferenceAngle[j] < lePlusPetitDansDiff) {
                     lePlusPetitDansDiff = tableauDifferenceAngle[j];
                     indiceDuPlusPetitDansDiff = j;
                 }
             }
-            retraitDuTableauCoordoneXY(NOMBREDEPOINTTOTAL, indiceDuPlusPetitDansDiff, tableauCoordoneePointXY);
-            NOMBREDEPOINTTOTAL--; //SUPRA IMPORTANT DE FAIRE CA 
-            construitTableauDePente(NOMBREDEPOINTTOTAL, tableauCoordoneePointXY, tableauDePente); // un tableau cest toujours passe en référence je crois
-            construitTableauDeLArcTan(NOMBREDEPOINTTOTAL, tableauDePente, tableauDeArcTan); // un tableau cest toujours passe en référence je crois
-            construitTableauDifferenceAngle(NOMBREDEPOINTTOTAL, tableauDeArcTan, tableauDifferenceAngle); // un tableau cest toujours passe en référence je crois
+            retraitDuTableauCoordoneXY(nombreDePointTotal, indiceDuPlusPetitDansDiff, tableauCoordoneePointXY);
+            nombreDePointTotal--; 
+            construitTableauDePente(nombreDePointTotal, tableauCoordoneePointXY, tableauDePente);
+            construitTableauDeLArcTan(nombreDePointTotal, tableauDePente, tableauDeArcTan); 
+            construitTableauDifferenceAngle(nombreDePointTotal, tableauDeArcTan, tableauDifferenceAngle); 
         }
     }
     printf("\n%i\n", pointConserver);
-    afficheTableauCoordoneePointXY(NOMBREDEPOINTTOTAL, tableauCoordoneePointXY);
+    afficheTableauCoordoneePointXY(nombreDePointTotal, tableauCoordoneePointXY);
     free(tableauCoordoneePointXY);
     free(tableauDePente);
     free(tableauDeArcTan);
