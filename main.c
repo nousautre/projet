@@ -1,12 +1,15 @@
 // PROJET
-// Marc-Étienne Leblanc
+// Marc-etienne Leblanc
 // Gabriel Poulin
 
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h> // pour LONG_MAX
+// pour LONG_MAX
+#include <limits.h> 
 
+// la structure de donnee contien ptX signifie point X de coordone de l'abscisse
+//ptY signifie point Y de coordonné de l'ordonne
 typedef struct {
     double ptX;
     double ptY;
@@ -41,10 +44,10 @@ void validationArgumentC(int argc) {
         sortieErreur();
     }
 }
-
-void validationNombrePointTotal(const int NOMBREDEPOINTTOTAL) {
-    if (NOMBREDEPOINTTOTAL < 2) {
-        fprintf(stderr, "Veuillez entrez un seul chiffre à partir de 2 et plus");
+// Le nombre de coordonnee minimal que le programme accepte est de 2
+void validationNombrePointTotal(const int nombreDePointTotal) {
+    if (nombreDePointTotal < 2) {
+        fprintf(stderr, "Veuillez entrez un seul chiffre a partir de 2 et plus");
         exit(-1);
     }
 }
@@ -59,18 +62,16 @@ int nombrePointTotal() {
     return NOMBREDEPOINTTOTAL;
 }
 
-// Cette procédure (qui ne renvoie rien) lis la coordonée actuellement entrer.
-// verifier si lutilisateur entre plein despace consécutive ou du garbarge
-// VERIFIE SI %lf cest ce que ca prend pour le double
+// Cette procedure lis la coordonee actuellement entrer.
 
 void coordoneePointXYActuel(double * pointXActuel, double * pointYActuel) {
     scanf("%lf", &*pointXActuel);
     scanf("%lf", &*pointYActuel);
-    //validationCoordonePointXY(pointXActuel, pointYActuel); pas besoin de vérifier
+    //validationCoordonePointXY(pointXActuel, pointYActuel); pas besoin de verifier
 }
 
-// cette procedure construit le tableau des coordonnée a l'aide de la fonction de lecture de point coordonePointXYActuel 
-// principale fonctionnalité est de construire le tableau de coordonee des donnée recu au clavier
+// cette procedure construit le tableau des coordonnee a l'aide de la fonction de lecture de point coordonePointXYActuel 
+// principale fonctionnalite est de construire le tableau de coordonee des donnee recu au clavier
 
 void construitTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee tableauCoordoneePointXY[]) {
     double pointXActuel = 0;
@@ -88,7 +89,7 @@ void construitTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee ta
     }
 }
 
-//cette procedure affiche le tableau creer à la base
+//cette procedure affiche le tableau creer a la base
 
 void afficheTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee tableauCoordoneePointXY[]) {
     int i = 0;
@@ -125,7 +126,7 @@ void afficheTableauDePente(const int NOMBREDEPOINTTOTAL, double tableauDePente[]
     printf("\n*****************************************\n");
 }
 
-// cette procédure calcule et renvoie arc tangente d'un angle
+// cette procedure calcule et renvoie arc tangente d'un angle
 
 double calculDeLArcTan(double pente) {
     return atan(pente);
@@ -208,8 +209,8 @@ void retraitDuTableauCoordoneXY(int NOMBREDEPOINTTOTAL, int indiceDuPlusPetitDan
     }
 }
 
-// La fonction main ( retourne 0 lorsque bien complété)
-// Appel les routines de validations des arguments passé
+// La fonction main ( retourne 0 lorsque bien complete)
+// Appel les routines de validations des arguments passe
 // creer les tableaux qui retiennent l'information
 
 int main(int argc, char ** argv) {
@@ -239,7 +240,7 @@ int main(int argc, char ** argv) {
             double lePlusPetitDansDiff = LONG_MAX;
             int indiceDuPlusPetitDansDiff = INT_MAX;
             int j = 0;
-            // -2 car indice d'un tableau debute a 0 et le calcul entre deux points renvoie n-1 point à la fin. 
+            // -2 car indice d'un tableau debute a 0 et le calcul entre deux points renvoie n-1 point a la fin. 
             for (j; j < nombreDePointTotal - 2; ++j) {
                 if (tableauDifferenceAngle[j] < lePlusPetitDansDiff) {
                     lePlusPetitDansDiff = tableauDifferenceAngle[j];
