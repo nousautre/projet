@@ -4,9 +4,9 @@
 
 //#define afficheTableau
 //#define afficheTableauPente
-#define afficheTableauPente1
-#define afficheTableauArcTan1 
-#define afficheTableauDiffAngle1
+//#define afficheTableauPente1
+//#define afficheTableauArcTan1 
+//#define afficheTableauDiffAngle1
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -122,7 +122,7 @@ int i = 0;
 void afficheTableauDePente(const int NOMBREDEPOINTTOTAL,double tableauDePente[]){
     int i = 0;
     for (i;i<NOMBREDEPOINTTOTAL-1;++i){
-         printf( "\nTableau espace la pente vaut: %lf",tableauDePente[i]);  
+         printf( "Tableau espace la pente vaut: %lf\n",tableauDePente[i]);  
     }   
      printf( "\n*****************************************\n");  
 }
@@ -145,7 +145,7 @@ int i = 0;
 void afficheTableauDeLArcTan(const int NOMBREDEPOINTTOTAL,double tableauDeArcTan[]){
     int i = 0;
     for (i;i<NOMBREDEPOINTTOTAL-1;++i){
-         printf( "\nARCTAN vaut: %lf ",tableauDeArcTan[i]);  
+         printf( "ARCTAN vaut: %lf\n ",tableauDeArcTan[i]);  
     }   
 }
 
@@ -167,7 +167,7 @@ int i = 0;
 void afficheTableauDifferenceAngle(const int NOMBREDEPOINTTOTAL,double tableauDifferenceAngle[]){
     int i = 0;
     for (i;i<NOMBREDEPOINTTOTAL-2;++i){
-         printf( "\nTableauDiffAngle vaut: %lf ",tableauDifferenceAngle[i]);  
+         printf( "TableauDiffAngle vaut: %lf \n",tableauDifferenceAngle[i]);  
     }   
 }
 // verifier pointAConserverArgument1 = 0  verifier pointAConserverArgument1 = 1 verifier pointAConserverArgument1 = 2
@@ -175,7 +175,6 @@ void afficheTableauDifferenceAngle(const int NOMBREDEPOINTTOTAL,double tableauDi
 int calculNombreDePointConserver(int NOMBREDEPOINTTOTAL, int pointAConserverArgument1){
     return ((((double)NOMBREDEPOINTTOTAL * (double)pointAConserverArgument1)/100)+.5);    
 }
-
 
 
 // il faut calculer les coordonee les replacer au bon endroit dans le tableau de difference
@@ -197,10 +196,7 @@ void moulinetteDuRetraitDansDifference(int NOMBREDEPOINTTOTAL, int indiceDansLeT
                     //le remettre dans le tableau 
                // LE NOMBRE DE POINT TOTAL doit CHANGER !!!!
 void moulinetteDuRetraitDuTableauCoordoneXY(int NOMBREDEPOINTTOTAL, int indiceDansLeTableauDuPlusPetit, coordonee tableauCoordoneePointXY[]){
-  
-    
-        NOMBREDEPOINTTOTAL--; 
-        int i=indiceDansLeTableauDuPlusPetit+1; // il faut retirer le deuxième point non pas le premier
+        int i=indiceDansLeTableauDuPlusPetit+1; 
         int j=i+1;
         for (i;i<NOMBREDEPOINTTOTAL;++i){
                 tableauCoordoneePointXY[i].ptX = tableauCoordoneePointXY[j].ptX; // pour l'instant ce n'est pas un tableau de structure alors je ne garde que le x
@@ -209,6 +205,18 @@ void moulinetteDuRetraitDuTableauCoordoneXY(int NOMBREDEPOINTTOTAL, int indiceDa
         }          
 }
 
+void retraitDuTableauCoordoneXY(int NOMBREDEPOINTTOTAL, int indiceDuPlusPetitDansDiff, coordonee tableauCoordoneePointXY[]){
+        int i = 0; 
+        int j = 0;
+        for (j;j<NOMBREDEPOINTTOTAL;++j){
+            if (i == indiceDuPlusPetitDansDiff+1){
+                j = j + 1;
+            }
+                tableauCoordoneePointXY[i].ptX = tableauCoordoneePointXY[j].ptX; // pour l'instant ce n'est pas un tableau de structure alors je ne garde que le x
+                tableauCoordoneePointXY[i].ptY = tableauCoordoneePointXY[j].ptY;
+                ++i;
+        }          
+}
 
 
 // La fonction main ( retourne 0 lorsque bien complété)
@@ -247,77 +255,34 @@ int main(int argc, char ** argv){
     afficheTableauDifferenceAngle(NOMBREDEPOINTTOTAL,tableauDifferenceAngle);
 #endif
     
-    //. Vous devez toujours conserver un minimum de 2 points
-    // si le nombre de pointConserver est le même que les points donnée en argument il n'y a pas de calcul à faire
-    // je vais faire un tableau de point qui pointe vers l'adresse des pas bon
-
         if (pointConserver != pointAConserverArgument){
             int nombreDePointASupprimer = NOMBREDEPOINTTOTAL - pointConserver;
            // printf( "\nPOINT A SUPPRIMER: %i\n", nombreDePointASupprimer); // SERA RETIRER
              int i = 1;
                 for (i;i<=nombreDePointASupprimer;++i){
-                    double lePlusPetit = LONG_MAX;
-                    int indiceDansLeTableauDuPlusPetit = INT_MAX;
+                    double lePlusPetitDansDiff = LONG_MAX;
+                    int indiceDuPlusPetitDansDiff = INT_MAX;
                     int j = 0;
                     // -2 car indice d'un tableau debute a 0 et le calcul entre deux points renvoie n-1 point à la fin. 
                         for (j;j<NOMBREDEPOINTTOTAL-2;++j){ 
-                            if (tableauDifferenceAngle[j] < lePlusPetit){
-                                lePlusPetit = tableauDifferenceAngle[j];
-                                indiceDansLeTableauDuPlusPetit=j;
-                                
+                            if (tableauDifferenceAngle[j] < lePlusPetitDansDiff){
+                                lePlusPetitDansDiff = tableauDifferenceAngle[j];
+                                indiceDuPlusPetitDansDiff=j;    
                             }
                         }
                    // printf("\nle plus petit cest : %i",indiceDansLeTableauDuPlusPetit);
-                    moulinetteDuRetraitDuTableauCoordoneXY(NOMBREDEPOINTTOTAL,indiceDansLeTableauDuPlusPetit, tableauCoordoneePointXY);
+                    retraitDuTableauCoordoneXY(NOMBREDEPOINTTOTAL,indiceDuPlusPetitDansDiff, tableauCoordoneePointXY);
                    // moulinetteDuRetraitDansDifference(NOMBREDEPOINTTOTAL, indiceDansLeTableauDuPlusPetit,tableauDifferenceAngle);
-                    
+                   // afficheTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY); 
                     NOMBREDEPOINTTOTAL--;//SUPRA IMPORTANT DE FAIRE CA 
                     construitTableauDePente(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY,tableauDePente);// un tableau cest toujours passe en référence je crois
-#ifdef afficheTableauPente
-                        afficheTableauDePente(NOMBREDEPOINTTOTAL,tableauDePente);
-#endif
-    
                     construitTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDePente,tableauDeArcTan);// un tableau cest toujours passe en référence je crois
-#ifdef afficheTableau 
-                       afficheTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDeArcTan);
-#endif
-    
                     construitTableauDifferenceAngle(NOMBREDEPOINTTOTAL, tableauDeArcTan, tableauDifferenceAngle);// un tableau cest toujours passe en référence je crois
-#ifdef afficheTableau                     
-                        afficheTableauDifferenceAngle(NOMBREDEPOINTTOTAL,tableauDifferenceAngle);
-                  afficheTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY);
-#endif   
-                    
                 }      
          }
     
-    //affiche les points...
     printf( "\n%i\n",pointConserver);
     afficheTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY);
-   // afficheTableauDifferenceAngle(NOMBREDEPOINTTOTAL,tableauDifferenceAngle);
 return 0;
 }
 
-/*
- -4.5 2.0   -4 3.0              =>  2
- -4 3.0     -3.5 4.0            =>  2
--3.5 4.0    -3 2.0              => -4
--3 2.0      -2.5 1              => -2
--2.5 1      -2 -40.4            => -82.800000
--2 -40.4    -1 12               =>  52.40
--1 12        3 -4.0423434       => -4.010586
-3 -4.0423434 6 2.098            =>  2.046781
-6 2.098      15 1.49            => -0.067556
-15 1.49
- 
- * 
- * 
- * 
-5
--2 -0.5
--1 2.2
-0 1.6 
-1 1.8
-2 1.0
- * 
- */

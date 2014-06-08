@@ -24,18 +24,18 @@
       </nativedebugger>
       <runprofile version="9">
         <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" 100</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" 101</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" 80 23</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}"80</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" 60</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" 90</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" 10</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" 80</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" 20</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" 99</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" 90</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" 80</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" 20</runcommand>
+        <runcommand>"${OUTPUT_PATH}" 80</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
