@@ -6,7 +6,7 @@
 //#define afficheTableauPente
 //#define afficheTableauPente1
 //#define afficheTableauArcTan1 
-//#define afficheTableauDiffAngle1
+#define afficheTableauDiffAngle1
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -48,8 +48,8 @@ void validationArgumentC(int argc){
 }
 
 void validationNombrePointTotal(const int NOMBREDEPOINTTOTAL){
-   if (NOMBREDEPOINTTOTAL < 1){
-       fprintf( stderr, "Veuillez entrez un seul chiffre plus grand que 1" );
+   if (NOMBREDEPOINTTOTAL < 2){
+       fprintf( stderr, "Veuillez entrez un seul chiffre à partir de 2 et plus" );
        exit(-1);
    }
 }
@@ -195,9 +195,9 @@ void moulinetteDuRetraitDansDifference(int NOMBREDEPOINTTOTAL, int indiceDansLeT
                     //calculer la difference angle entre le precedent et le suivant du remove
                     //le remettre dans le tableau 
                // LE NOMBRE DE POINT TOTAL doit CHANGER !!!!
-void moulinetteDuRetraitDuTableauCoordoneXY(int NOMBREDEPOINTTOTAL, int indiceDansLeTableauDuPlusPetit, coordonee tableauCoordoneePointXY[]){
-        int i=indiceDansLeTableauDuPlusPetit+1; 
-        int j=i+1;
+void moulinetteDuRetraitDuTableauCoordoneXY(int NOMBREDEPOINTTOTAL, int indiceDuPlusPetitDansDiff, coordonee tableauCoordoneePointXY[]){
+        int i = indiceDuPlusPetitDansDiff; 
+        int j = i+1;
         for (i;i<NOMBREDEPOINTTOTAL;++i){
                 tableauCoordoneePointXY[i].ptX = tableauCoordoneePointXY[j].ptX; // pour l'instant ce n'est pas un tableau de structure alors je ne garde que le x
                 tableauCoordoneePointXY[i].ptY = tableauCoordoneePointXY[j].ptY;
@@ -233,10 +233,11 @@ int main(int argc, char ** argv){
         pointConserver = 2;
     }
          
-    coordonee tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]; // combien de point total par defaut en assignant une valeur non dynamique?? création de tableau non dynamique
-    double tableauDePente[NOMBREDEPOINTTOTAL-1];
-    double tableauDeArcTan[NOMBREDEPOINTTOTAL-1];
-    double tableauDifferenceAngle[NOMBREDEPOINTTOTAL-1];
+   // coordonee tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]; // combien de point total par defaut en assignant une valeur non dynamique?? création de tableau non dynamique
+     coordonee * tableauCoordoneePointXY = malloc(sizeof(coordonee)*NOMBREDEPOINTTOTAL);
+    double * tableauDePente  = malloc(sizeof(double)*(NOMBREDEPOINTTOTAL-1));
+    double * tableauDeArcTan= malloc(sizeof(double)*(NOMBREDEPOINTTOTAL-1));
+    double * tableauDifferenceAngle= malloc(sizeof(double)*(NOMBREDEPOINTTOTAL-1));
     
    // printf( "\nTotal de point: %i\n", NOMBREDEPOINTTOTAL); // SERA RETIRER
      
@@ -272,7 +273,7 @@ int main(int argc, char ** argv){
                         }
                    // printf("\nle plus petit cest : %i",indiceDansLeTableauDuPlusPetit);
                     retraitDuTableauCoordoneXY(NOMBREDEPOINTTOTAL,indiceDuPlusPetitDansDiff, tableauCoordoneePointXY);
-                   // moulinetteDuRetraitDansDifference(NOMBREDEPOINTTOTAL, indiceDansLeTableauDuPlusPetit,tableauDifferenceAngle);
+                    //moulinetteDuRetraitDansDifference(NOMBREDEPOINTTOTAL, indiceDuPlusPetitDansDiff,tableauDifferenceAngle);
                    // afficheTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY); 
                     NOMBREDEPOINTTOTAL--;//SUPRA IMPORTANT DE FAIRE CA 
                     construitTableauDePente(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY,tableauDePente);// un tableau cest toujours passe en référence je crois
@@ -283,6 +284,10 @@ int main(int argc, char ** argv){
     
     printf( "\n%i\n",pointConserver);
     afficheTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY);
+    free(tableauCoordoneePointXY);
+    free(tableauDePente);
+    free(tableauDeArcTan);
+    free(tableauDifferenceAngle);
 return 0;
 }
 
