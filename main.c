@@ -2,6 +2,11 @@
 // Marc-Étienne Leblanc
 // Gabriel Poulin
 
+//#define afficheTableau
+//#define afficheTableauPente
+#define afficheTableauPente1
+#define afficheTableauArcTan1 
+#define afficheTableauDiffAngle1
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,9 +18,45 @@ typedef struct {
                 double ptY;
  }coordonee;
 
+void sortieErreur(){
+  fprintf( stderr, "L'argument donne n'est pas valide, veuillez entrez un seul chiffre entre 1 et 100." );
+  exit(-1);
+}
+void sortieErreurOrdre(){
+  fprintf( stderr, "Veuillez entrez des coordonnees valides en ordre." );
+  exit(-1);
+}
+
+// revoir LA SORTIE sa semble pas marcher
+void validationCoordonePointXY(double * pointXActuel, double * pointYActuel){
+    if ((*pointXActuel < LONG_MIN) || (*pointYActuel < LONG_MIN) || 
+            (*pointXActuel > LONG_MAX) || (*pointYActuel > LONG_MAX)){
+       fprintf( stderr, "Veuillez entrez des coordonnees valides" );
+       exit(-1);
+    }
+}
+
+void validationArgumentV(int pointAConserverArgument1){
+     if ((pointAConserverArgument1 < 1)||(pointAConserverArgument1>100)){
+         sortieErreur();
+    }
+}
+void validationArgumentC(int argc){
+     if (argc != 2){
+        sortieErreur();
+    }
+}
+
+void validationNombrePointTotal(const int NOMBREDEPOINTTOTAL){
+   if (NOMBREDEPOINTTOTAL < 1){
+       fprintf( stderr, "Veuillez entrez un seul chiffre plus grand que 1" );
+       exit(-1);
+   }
+}
+
 
 // Cette fonction renvoie le nombre total de point X,Y que l'utilisateur entrera
-// Elle lis un nombre et ne fait aucune validation
+// Elle lis un nombre et appel validation pour s'assurer qu'un nombre valide est entre
  int nombrePointTotal(){
         int NOMBREDEPOINTTOTAL;
         scanf("%i", &NOMBREDEPOINTTOTAL);
@@ -41,7 +82,9 @@ void construitTableauCoordoneePointXY(const int NOMBREDEPOINTTOTAL, coordonee ta
     int i=0;
     for (i;i<NOMBREDEPOINTTOTAL;++i){
        coordoneePointXYActuel(&pointXActuel,&pointYActuel);
-       if (pointXPrecedent > pointXActuel){sortieErreurOrdre();}
+       if (pointXPrecedent > pointXActuel){
+           sortieErreurOrdre();
+       }
        pointXPrecedent = pointXActuel;
        tableauCoordoneePointXY[i].ptX = pointXActuel; // pour l'instant ce n'est pas un tableau de structure alors je ne garde que le x
        tableauCoordoneePointXY[i].ptY = pointYActuel;
@@ -81,6 +124,7 @@ void afficheTableauDePente(const int NOMBREDEPOINTTOTAL,double tableauDePente[])
     for (i;i<NOMBREDEPOINTTOTAL-1;++i){
          printf( "\nTableau espace la pente vaut: %lf",tableauDePente[i]);  
     }   
+     printf( "\n*****************************************\n");  
 }
 
 // cette procédure calcule et renvoie artan d'un angle
@@ -129,44 +173,9 @@ void afficheTableauDifferenceAngle(const int NOMBREDEPOINTTOTAL,double tableauDi
 // verifier pointAConserverArgument1 = 0  verifier pointAConserverArgument1 = 1 verifier pointAConserverArgument1 = 2
 
 int calculNombreDePointConserver(int NOMBREDEPOINTTOTAL, int pointAConserverArgument1){
-    return ((NOMBREDEPOINTTOTAL * pointAConserverArgument1)/100);    
+    return ((((double)NOMBREDEPOINTTOTAL * (double)pointAConserverArgument1)/100)+.5);    
 }
 
-void sortieErreur(){
-  fprintf( stderr, "L'argument donne n'est pas valide, veuillez entrez un seul chiffre entre 1 et 100." );
-  exit(-1);
-}
-void sortieErreurOrdre(){
-  fprintf( stderr, "Veuillez entrez des coordonnees valides en ordre." );
-  exit(-1);
-}
-
-// revoir LA SORTIE sa semble pas marcher
-void validationCoordonePointXY(double * pointXActuel, double * pointYActuel){
-    if ((*pointXActuel < LONG_MIN) || (*pointYActuel < LONG_MIN) || 
-            (*pointXActuel > LONG_MAX) || (*pointYActuel > LONG_MAX)){
-       fprintf( stderr, "Veuillez entrez des coordonnees valides" );
-       exit(-1);
-    }
-}
-
-void validationArgumentV(int pointAConserverArgument1){
-     if ((pointAConserverArgument1 < 1)||(pointAConserverArgument1>100)){
-         sortieErreur();
-    }
-}
-void validationArgumentC(int argc){
-     if (argc != 2){
-        sortieErreur();
-    }
-}
-
-void validationNombrePointTotal(const int NOMBREDEPOINTTOTAL){
-   if (NOMBREDEPOINTTOTAL < 1){
-       fprintf( stderr, "Veuillez entrez un seul chiffre plus grand que 1" );
-       exit(-1);
-   }
-}
 
 
 // il faut calculer les coordonee les replacer au bon endroit dans le tableau de difference
@@ -211,33 +220,37 @@ int main(int argc, char ** argv){
     validationArgumentV(pointAConserverArgument);
       
     int NOMBREDEPOINTTOTAL = nombrePointTotal();
-    
     int pointConserver = calculNombreDePointConserver(NOMBREDEPOINTTOTAL, pointAConserverArgument);
-    
-      
+    if(pointConserver<2){
+        pointConserver = 2;
+    }
+         
     coordonee tableauCoordoneePointXY[NOMBREDEPOINTTOTAL]; // combien de point total par defaut en assignant une valeur non dynamique?? création de tableau non dynamique
     double tableauDePente[NOMBREDEPOINTTOTAL-1];
     double tableauDeArcTan[NOMBREDEPOINTTOTAL-1];
     double tableauDifferenceAngle[NOMBREDEPOINTTOTAL-1];
     
    // printf( "\nTotal de point: %i\n", NOMBREDEPOINTTOTAL); // SERA RETIRER
-    
-    
+     
     construitTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY);// un tableau cest toujours passe en référence je crois
-    
     construitTableauDePente(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY,tableauDePente);// un tableau cest toujours passe en référence je crois
-    afficheTableauDePente(NOMBREDEPOINTTOTAL,tableauDePente);
-    
     construitTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDePente,tableauDeArcTan);// un tableau cest toujours passe en référence je crois
-    afficheTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDeArcTan);
-    
     construitTableauDifferenceAngle(NOMBREDEPOINTTOTAL, tableauDeArcTan, tableauDifferenceAngle);// un tableau cest toujours passe en référence je crois
+
+#ifdef afficheTableauPente1
+    afficheTableauDePente(NOMBREDEPOINTTOTAL,tableauDePente);
+#endif   
+#ifdef afficheTableauArcTan1  
+    afficheTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDeArcTan);
+#endif    
+#ifdef afficheTableauDiffAngle1 
     afficheTableauDifferenceAngle(NOMBREDEPOINTTOTAL,tableauDifferenceAngle);
+#endif
     
     //. Vous devez toujours conserver un minimum de 2 points
     // si le nombre de pointConserver est le même que les points donnée en argument il n'y a pas de calcul à faire
     // je vais faire un tableau de point qui pointe vers l'adresse des pas bon
-    //if (pointConserver > 2){
+
         if (pointConserver != pointAConserverArgument){
             int nombreDePointASupprimer = NOMBREDEPOINTTOTAL - pointConserver;
            // printf( "\nPOINT A SUPPRIMER: %i\n", nombreDePointASupprimer); // SERA RETIRER
@@ -254,19 +267,26 @@ int main(int argc, char ** argv){
                                 
                             }
                         }
-                    printf("\nle plus petit cest : %i",indiceDansLeTableauDuPlusPetit);
+                   // printf("\nle plus petit cest : %i",indiceDansLeTableauDuPlusPetit);
                     moulinetteDuRetraitDuTableauCoordoneXY(NOMBREDEPOINTTOTAL,indiceDansLeTableauDuPlusPetit, tableauCoordoneePointXY);
                    // moulinetteDuRetraitDansDifference(NOMBREDEPOINTTOTAL, indiceDansLeTableauDuPlusPetit,tableauDifferenceAngle);
                     
                     NOMBREDEPOINTTOTAL--;//SUPRA IMPORTANT DE FAIRE CA 
                     construitTableauDePente(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY,tableauDePente);// un tableau cest toujours passe en référence je crois
+#ifdef afficheTableauPente
                         afficheTableauDePente(NOMBREDEPOINTTOTAL,tableauDePente);
+#endif
     
                     construitTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDePente,tableauDeArcTan);// un tableau cest toujours passe en référence je crois
-                        afficheTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDeArcTan);
+#ifdef afficheTableau 
+                       afficheTableauDeLArcTan(NOMBREDEPOINTTOTAL,tableauDeArcTan);
+#endif
     
                     construitTableauDifferenceAngle(NOMBREDEPOINTTOTAL, tableauDeArcTan, tableauDifferenceAngle);// un tableau cest toujours passe en référence je crois
+#ifdef afficheTableau                     
                         afficheTableauDifferenceAngle(NOMBREDEPOINTTOTAL,tableauDifferenceAngle);
+                  afficheTableauCoordoneePointXY(NOMBREDEPOINTTOTAL,tableauCoordoneePointXY);
+#endif   
                     
                 }      
          }
