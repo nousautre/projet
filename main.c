@@ -1,5 +1,5 @@
 /**
- * INF3135 TP1
+ *  TP1
  * 
  * LEBM21097907, Leblanc, Marc-Etienne
  * POUG15087908, Poulin, Gabriel
