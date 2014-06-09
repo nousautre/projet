@@ -55,17 +55,21 @@ void sortieErreurNombreDePoint() {
 
 /*
  *  Les procedure qui debute par validation verifie que les donnes saisie ou generer
- * sont valide ou acceptable pour le systeme
+ *  sont valide ou acceptable pour le systeme
  */
 
-/* La validation de l'argument lors du lancement par lutilisateur */
+/* La validation de l'argument lors du lancement par lutilisateur 
+ * Elle recoit l'entree utilisateur du % associer au nombre de point conserver
+ */
 void validationArgumentV(const int pointAConserverArgument1) {
     if ((pointAConserverArgument1 < 1) || (pointAConserverArgument1 > 100)) {
         sortieErreurArgument();
     }
 }
 
-/* La validation de l'argument lors du lancement par lutilisateur 
+/* 
+ * Recoit argC en argument.
+ * La validation de l'argument lors du lancement par lutilisateur 
  * un seul argument est accepter le premier etant le programme lui-meme
  */
 void validationArgumentC(const int argc) {
@@ -75,9 +79,9 @@ void validationArgumentC(const int argc) {
 }
 
 /*
- * La validation nombre de coordonnee minimal que le programme accepte est de 2
+ * La validation de l'argument nombre de coordonnee minimal ici nomme (nombreDePointTotal)
+ * que le programme accepte est de 2.
  */
-
 void validationNombrePointTotal(const int nombreDePointTotal) {
     if (nombreDePointTotal < 2) {
         sortieErreurNombreDePoint();
@@ -106,8 +110,10 @@ void coordoneePointXYActuel(double * pointXActuel, double * pointYActuel) {
 }
 
 /* 
- * Cette procedure construit le tableau des coordonnee a l'aide de la fonction de lecture de point coordonePointXYActuel 
- * principale fonctionnalite est de construire le tableau de coordonee des donnee recu au clavier
+ * Cette procedure construit le tableau des coordonnee a l'aide
+ *  de la fonction de lecture de point coordonePointXYActuel. 
+ * principale fonctionnalite est de construire le tableau 
+ * de coordonee des donnee recu au clavier jusqua un maximale de nombreDePointTotal
  */
 
 void construitTableauCoordoneePointXY(const int nombreDePointTotal, Coordonees tableauCoordoneePointXY[]) {
@@ -127,7 +133,9 @@ void construitTableauCoordoneePointXY(const int nombreDePointTotal, Coordonees t
 }
 
 /* 
- * Cette procedure affiche le tableau de coordonee des points X et Y
+ * Cette procedure affiche le tableau de coordonees des points X et Y du tableau 
+ * recu. Elle lis le tableau jusquau maximum de ce tableau soit
+ *  nombreDePointTotal lautre argument recu
  */
 
 void afficheTableauCoordoneePointXY(const int nombreDePointTotal, Coordonees tableauCoordoneePointXY[]) {
@@ -139,7 +147,7 @@ void afficheTableauCoordoneePointXY(const int nombreDePointTotal, Coordonees tab
 }
 
 /*
- * Cette fonction calcule la pente entre deux points y 
+ * Cette fonction calcule et renvoie la pente entre deux points y 
  * du pointA - y du pointB / x du pointA - x du pointB 
  */
 
@@ -148,8 +156,10 @@ double calculDelaPente(const Coordonees pointA, const Coordonees pointB) {
 }
 
 /*
- * Construit le tableau de pente de chacun des points
- * Le calcul s'effectue sur nombreDePointTotal -1 car le dernier point n'a pas de suivant
+ * Construit le tableau de pente des points recu tableauCoordoneePointXY 
+ * elle remplie le tableauDePente avec c'est pente calculer.
+ * Le calcul s'effectue sur nombreDePointTotal -1 car le dernier 
+ * point n'a pas de pente a calculer avec un suivant fictif.
  */
 
 void construitTableauDePente(const int nombreDePointTotal, Coordonees tableauCoordoneePointXY[], double tableauDePente[]) {
@@ -160,19 +170,8 @@ void construitTableauDePente(const int nombreDePointTotal, Coordonees tableauCoo
 }
 
 /*
- * Cette procedure affiche le tableau de pente
- */
-
-void afficheTableauDePente(const int nombreDePointTotal, double tableauDePente[]) {
-    int i = 0;
-    for (i; i < nombreDePointTotal - 1; ++i) {
-        printf("Tableau espace la pente vaut: %lf\n", tableauDePente[i]);
-    }
-    printf("\n*****************************************\n");
-}
-
-/*
- *  Cette procedure calcule et renvoie arc tangente d'un angle
+ *  Cette procedure calcule et renvoie arc tangente d'un angle a partir d'un 
+ * argument pente recu.
  */
 
 double calculDeLArcTan(const double pente) {
@@ -180,8 +179,10 @@ double calculDeLArcTan(const double pente) {
 }
 
 /*
- * Construit le tableau de ArcTan de chacun des points
- * Le calcul s'effectue sur nombreDePointTotal -1 car le dernier point n'a pas de suivant
+ *  Construit le tableau de l'arctan des points recu tableauDePente 
+ * elle remplie le tableauDeArcTan avec c'est arc Tangente calculer.
+ * Le calcul s'effectue sur nombreDePointTotal -1 car le dernier 
+ * point n'a pas de darctan a calculer avec un suivant fictif.
  */
 
 void construitTableauDeLArcTan(const int nombreDePointTotal, double tableauDePente[], double tableauDeArcTan[]) {
@@ -192,20 +193,20 @@ void construitTableauDeLArcTan(const int nombreDePointTotal, double tableauDePen
 }
 
 /*
- * Cette procedure affiche le tableau de ArcTan
+ * Cette fonction retourne l'absolue de la difference entre les angles elle 
+ * recoit et calcul la difference entre deux angles et renvoie le resultat
  */
-
-void afficheTableauDeLArcTan(const int nombreDePointTotal, double tableauDeArcTan[]) {
-    int i = 0;
-    for (i; i < nombreDePointTotal - 1; ++i) {
-        printf("ARCTAN vaut: %lf\n ", tableauDeArcTan[i]);
-    }
-}
-
 double calculDifferenceAngle(const double angleAIplus1, const double angleAI) {
     return (fabs(angleAIplus1 - angleAI));
 }
 
+/*
+ *  Construit le tableau de la difference d'angle des points recu  du 
+ * tableauDeArcTan. Elle remplie le tableauDifferenceAngle
+ * Le calcul s'effectue sur nombreDePointTotal -2 car le dernier 
+ * point n'a pas de darctan a calculer avec un suivant fictif et le premier n'a
+ * pas de precedent pour ce meme calcul
+ */
 void construitTableauDifferenceAngle(const int nombreDePointTotal, double tableauDeArcTan[], double tableauDifferenceAngle[]) {
     int i = 0;
     for (i; i < nombreDePointTotal - 2; ++i) {
@@ -214,18 +215,10 @@ void construitTableauDifferenceAngle(const int nombreDePointTotal, double tablea
 }
 
 /*
- * Cette procedure affiche le tableau de ArcTan
- */
-
-void afficheTableauDifferenceAngle(const int nombreDePointTotal, double tableauDifferenceAngle[]) {
-    int i = 0;
-    for (i; i < nombreDePointTotal - 2; ++i) {
-        printf("TableauDiffAngle vaut: %lf \n", tableauDifferenceAngle[i]);
-    }
-}
-
-/*
- * verifier pointAConserverArgument1 = 0  verifier pointAConserverArgument1 = 1 verifier pointAConserverArgument1 = 2
+ * Cette fonction renvoie le nombre de point que l'utilisateur desire conserver
+ * Ce calcul est fait a partir de l'argument recu en parametre lors du lancement
+ * ainsi que le nombre de coordonee entree.
+ * 
  */
 
 int calculNombreDePointConserver(const int nombreDePointTotal, const int pointAConserverArgument1) {
@@ -233,8 +226,9 @@ int calculNombreDePointConserver(const int nombreDePointTotal, const int pointAC
 }
 
 /*
- * Cette procedure retire du tableau de coordonees la coordonnees associer au plus petit angle
- * calculer elle reecrer seulement a partir de ce nombre les points dans le tableau
+ * Cette procedure retire du tableau de coordonees la coordonnees associer 
+ * au plus petit angle calculer. Elle reecrer seulement a partir de ce nombre 
+ * les points dans le tableau qui le suive ainsi il y a un gain de rapidite.
  *  
  */
 void retraitDuTableauCoordoneesXY(const int nombreDePointTotal, const int indiceDuPlusPetitDansDifferenceAngle, Coordonees tableauCoordoneePointXY[]) {
@@ -312,4 +306,3 @@ int main(int argc, char ** argv) {
     afficheTableauCoordoneePointXY(nombreDePointTotal, tableauCoordoneePointXY);
     return 0;
 }
-
